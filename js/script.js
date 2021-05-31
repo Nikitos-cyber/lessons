@@ -1,3 +1,4 @@
+  'use strict';
   let money = 45000;
   let income = 'Freelance';
   let addExpenses = 'Интернет, комуналка, такси, кино';
