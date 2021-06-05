@@ -32,11 +32,35 @@
     budget: money,
     budgetDay: 0,
     budgetMonth: 0,
+    percentDepisit: 0,
+    moneyDeposit: 0 ,
      expensesMonth: 0,
     asking: function(){
+
+      if(confirm('Есть ли у вас дополнительный заработок ?')){
+        let itemIncome;
+        let cachIncome;
+        do{
+           itemIncome = prompt('Какой у вас  дополнительный заработок ?','Таксую');
+
+        }while(isNumber(itemIncome));
+
+        do {
+          cachIncome = prompt('Сколько в мессяц зарабатываете на этом ?','10000');
+
+        }while (!isNumber(cachIncome));
+
+        cachIncome = cachIncome * 1;
+
+        appData.income [itemIncome] = cachIncome;
+      }
+
+
      let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую ');
       appData.addExpenses = addExpenses.toLowerCase().split( ', ' );
       appData.deposit = confirm('Есть ли у вас депозит в банке?');
+      appData.getInfoDeposit();
+      console.log('Info депозит:', appData.moneyDeposit ,appData.percentDepisit);
 
     let sum = 0;
     for( let i = 0; i < 2; i++){
@@ -48,11 +72,26 @@
       }while(!isNumber(val));
       let str = "'" + String(result) + "'";
       val = +val;
-      appData.expenses[str]=val;
+      appData.expenses[str] = val;
     }
     
     
     
+    },
+    getInfoDeposit: function(){
+      if(appData.deposit){
+        do{
+           appData.percentDepisit = prompt('Какой годовой процент ?', '10');
+        }while(!isNumber(appData.percentDepisit));
+       
+         do{
+          appData.moneyDeposit = prompt('Какая сумма заложена ?','10000');
+        }while(!isNumber(appData.moneyDeposit));
+        
+      }
+    },
+    calcSavedMoney: function(){
+      return appData.budgetMonth * appData.period;
     }
   };
 
@@ -64,9 +103,26 @@
   appData.asking();
  
   
-  
+  let logAddExpenses = function (){
+    let str,upper,result,val;
+    val = '';
 
-  
+    appData.addExpenses.forEach(function(item, i , array){
+      str = item.toString() ;
+      upper = str[0];
+      result = upper.toUpperCase();
+      str = str.replace(upper , result );
+      val += str;
+      if (i < array.length -1){
+        val += ', ';
+      }
+      
+      
+    });
+    console.log('Возможные расходы: ' + val );
+  };
+
+  logAddExpenses();
  
 
   
@@ -169,6 +225,8 @@
     return ('Что то пошло не так');
   }
 
+  
+
   };
   console.log(appData.getStatusIncome());
 
@@ -186,5 +244,6 @@
   }
  };
   
- forInAppData();
+  forInAppData();
+
   
