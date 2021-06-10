@@ -1,6 +1,12 @@
   'use strict';
 
-  
+  let str = 'ф';
+
+  if(str.charCodeAt(0) >= 1040 && str.charCodeAt(0) <= 1103 ){
+    console.log('Выведена русская буква: ', str);
+  }else{
+    console.log('error');
+  }
 
   let start = document.getElementById('start');
 
@@ -28,7 +34,7 @@
     let expensesTitle = document.querySelector('.expenses-title');
     let expensesAmountSum = document.querySelector('.expenses-amount');
 
-    let incomeTitle = document.querySelector('.income-title');
+    let incomeTitle = document.querySelector('.income-title')[1];
     let incomeAmount = document.querySelector('.income-amount');
 
     let salaryAmount = document.querySelector('.salary-amount');
@@ -37,11 +43,14 @@
 
     let incomeItem = document.querySelectorAll('.income-items');
 
+    let addIncomeItem = document.querySelector('.additional_income-item');
     
     let editTitle = document.querySelectorAll('.title , .period-amount')[8];
 
+    let expensesAmountVals = document.querySelector('.expenses-amount');
 
-    
+
+  
 
   
 
@@ -86,6 +95,11 @@
   },
   addIncomeBlock:function(){
     let cloneIcomeItems = incomeItem[0].cloneNode(true);
+
+    let cloneInputNameItems = cloneIcomeItems.querySelector('.income-title');
+    let cloneInputValItems = cloneIcomeItems.querySelector('.income-amount');
+    cloneInputNameItems.value = null;
+    cloneInputValItems.value = null;
     plusButton1.before(cloneIcomeItems);
 
     incomeItem = document.querySelectorAll('.income-items');
@@ -96,6 +110,12 @@
   },
   addExpensesBlock: function(){
     let cloneExpensesItems = expensesItems[0].cloneNode(true);
+    let cloneInputNameExpenses = cloneExpensesItems.querySelector('.expenses-title');
+    let cloneInputValExpenses = cloneExpensesItems.querySelector('.expenses-amount');
+    cloneInputNameExpenses.value = null;
+    cloneInputValExpenses.value = null;
+    console.log(cloneExpensesItems);
+
     plusButton2.before(cloneExpensesItems);
     expensesItems = document.querySelectorAll('.expenses-items');
     if (expensesItems.length === 3){
@@ -150,6 +170,8 @@
   },
 
   showResult: function(){
+    
+   
     budgetMonthValue.value = appData.budgetMonth;
     budgetDayInput.value = appData.budgetDay;
     expensesMonth.value = appData.expensesMonth;
@@ -190,14 +212,132 @@
   };
 
   periodSelect.addEventListener('input', appData.changeRang);
+  
  
   start.addEventListener('click',function(event){
+    let bool = true ;
     if((salaryAmount.value).trim() === ''){
       event.preventDefault();
-      console.log('error');
+     bool = false;
     }
-      start.addEventListener('click',appData.start);
-   
+       for (let j = 1 ; j <= incomeItem.length ; j++){
+         let incomeTitles = document.querySelectorAll('.income-title')[j];
+          if (incomeTitles.value.trim() !== '' && bool === true){
+         for (let i = 0; i <  incomeTitles.value.length; i++){
+       if( incomeTitles.value.charCodeAt(i) >= 1040 && incomeTitles.value.charCodeAt(i) <= 1103 ){
+         bool = true;
+         continue;
+       }else{
+         event.preventDefault();
+        bool= false;
+        break;
+       }
+        
+        
+       
+     }
+     
+    
+     
+    }
+      
+     
+       }
+
+       for (let j = 0 ; j <= incomeItem.length ; j++){
+         let incomeAdd = document.querySelectorAll('.additional_income-item')[j];
+          if (incomeAdd .value.trim() !== '' && bool === true){
+         for (let i = 0; i <  incomeAdd .value.length; i++){
+       if( incomeAdd .value.charCodeAt(i) >= 1040 && incomeAdd .value.charCodeAt(i) <= 1103 ){
+         bool = true;
+         continue;
+       }else{
+         event.preventDefault();
+        bool= false;
+        break;
+       }
+        
+        
+       
+     }
+     
+    
+     
+    }
+      
+     
+       }
+
+  for (let j = 1 ; j <= incomeItem.length ; j++){
+         let expensesItem = document.querySelectorAll('.expenses-title')[j];
+          if (expensesItem .value.trim() !== '' && bool === true){
+         for (let i = 0; i <  expensesItem .value.length; i++){
+       if(expensesItem .value.charCodeAt(i) >= 1040 && expensesItem .value.charCodeAt(i) <= 1103 ){
+         bool = true;
+         continue;
+       }else{
+         event.preventDefault();
+        bool= false;
+        break;
+       }
+        
+        
+       
+     }
+     
+    
+     
+    }
+      
+     
+       }
+
+
+
+
+      if (!isNumber(incomeAmount.value) && incomeAmount.value.trim() !== '' ){
+
+        alert('Введите число в полe суммы');
+        event.preventDefault();
+        return;
+
+      }
+
+
+      
+      if (!isNumber(expensesAmountVals.value) && expensesAmountVals.value.trim() !== '' ){
+
+        alert('Введите число в полe суммы');
+        event.preventDefault();
+        return;
+
+      }
+      
+     
+
+      if (!isNumber(salaryAmount.value) && salaryAmount.value.trim() !== '' ){
+
+        alert('Введите число в полe суммы');
+        event.preventDefault();
+        return;
+
+      }
+
+      
+      if (!isNumber(targetAmount.value) && targetAmount.value.trim() !== '' ){
+
+        alert('Введите число в полe суммы');
+        event.preventDefault();
+        return;
+
+      }
+
+
+    if (bool === true){
+       appData.start();
+    }else{
+     alert('Введите значение на русском языке!!');
+    }
     
   });
   plusButton2.addEventListener('click',appData.addExpensesBlock);
