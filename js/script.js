@@ -49,7 +49,7 @@
 
     let expensesAmountVals = document.querySelector('.expenses-amount');
 
-
+    
   
 
   
@@ -72,7 +72,7 @@
     moneyDeposit: 0 ,
     expensesMonth: 0,
     start : function (){
-    
+    console.log(this);
     
 
     appData.budget = +salaryAmount.value;
@@ -93,6 +93,19 @@
     appData.showResult();
    
   },
+  reset: function(){
+    appData.deleteInputIncome();
+
+  },
+  deleteInputIncome: function(){
+    incomeItem = document.querySelectorAll('.income-items');
+    if(incomeItem.length > 1){
+      for(let k = 1; k <= incomeItem.lenght ; k++){
+       console.log(k);
+      }
+    }
+    
+  },
   addIncomeBlock:function(){
     let cloneIcomeItems = incomeItem[0].cloneNode(true);
 
@@ -100,11 +113,11 @@
     let cloneInputValItems = cloneIcomeItems.querySelector('.income-amount');
     cloneInputNameItems.value = null;
     cloneInputValItems.value = null;
-    plusButton1.before(cloneIcomeItems);
+    this.before(cloneIcomeItems);
 
     incomeItem = document.querySelectorAll('.income-items');
     if (incomeItem.length === 3){
-      plusButton1.style.display = 'none';
+      this.style.display = 'none';
     }
 
   },
@@ -116,7 +129,7 @@
     cloneInputValExpenses.value = null;
     console.log(cloneExpensesItems);
 
-    plusButton2.before(cloneExpensesItems);
+    this.before(cloneExpensesItems);
     expensesItems = document.querySelectorAll('.expenses-items');
     if (expensesItems.length === 3){
       plusButton2.style.display = 'none';
@@ -214,7 +227,7 @@
   periodSelect.addEventListener('input', appData.changeRang);
   
  
-  start.addEventListener('click',function(event){
+  start.addEventListener('click',function (event){
     let bool = true ;
     if((salaryAmount.value).trim() === ''){
       event.preventDefault();
@@ -244,10 +257,11 @@
      
        }
 
-       for (let j = 0 ; j <= incomeItem.length ; j++){
+       for (let j = 0 ; j <= additionalIncomeItem.length ; j++){
          let incomeAdd = document.querySelectorAll('.additional_income-item')[j];
-          if (incomeAdd .value.trim() !== '' && bool === true){
-         for (let i = 0; i <  incomeAdd .value.length; i++){
+         
+          if (incomeAdd.value.trim() !== '' && bool === true){
+         for (let i = 0; i <  incomeAdd.value.length; i++){
        if( incomeAdd .value.charCodeAt(i) >= 1040 && incomeAdd .value.charCodeAt(i) <= 1103 ){
          bool = true;
          continue;
@@ -268,7 +282,7 @@
      
        }
 
-  for (let j = 1 ; j <= incomeItem.length ; j++){
+  for (let j = 1 ; j <= expensesItems.length ; j++){
          let expensesItem = document.querySelectorAll('.expenses-title')[j];
           if (expensesItem .value.trim() !== '' && bool === true){
          for (let i = 0; i <  expensesItem .value.length; i++){
@@ -335,6 +349,23 @@
 
     if (bool === true){
        appData.start();
+       event.preventDefault();
+       this.style.display ='none';
+      let reset = document.querySelector('#cancel');
+      reset.style.display = 'block';
+      let input = document.querySelectorAll('input');
+
+      input.forEach(function(item,i,arr){
+       if(i <= 11){
+        item.setAttribute('disabled','disabled');
+
+       }else{
+         return;
+       }
+      });
+
+    reset.addEventListener('click',appData.reset);
+
     }else{
      alert('Введите значение на русском языке!!');
     }
@@ -342,6 +373,7 @@
   });
   plusButton2.addEventListener('click',appData.addExpensesBlock);
   plusButton1.addEventListener('click',appData.addIncomeBlock);
+
 
 
   function isNumber(number){
@@ -449,7 +481,7 @@
 
   
 
-  
+  appData.start();
   
 
 
