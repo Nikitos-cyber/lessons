@@ -52,8 +52,9 @@
 
   
 
-  const AppData = function(){
-     this.income =  {};
+  class AppData  {
+    constructor (){
+      this.income =  {};
     this.addIncome = [];
     this.expenses = {};
     this.addExpenses = [];
@@ -65,7 +66,8 @@
     this.percentDepisit = 0;
     this.moneyDeposit = 0 ;
     this.expensesMonth = 0;
-  };
+    }
+  }
   AppData.prototype.isNumber = function(number){
     return !isNaN(parseFloat(number)) && isFinite(number);
   };
