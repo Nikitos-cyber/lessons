@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded',function(){
 
   // Timer 
   function countTimer(deadline){
+    
 
     let timerHours = document.getElementById('timer-hours'),
       timerMinuts = document.getElementById('timer-minutes'),
@@ -85,27 +86,67 @@ window.addEventListener('DOMContentLoaded',function(){
 
   }
 
-  countTimer('01 july 2021');
+  countTimer('01 july 2022');
 
   // Меню
   const toggleMenu = ()=>{
     const btnMenu = document.querySelector('.menu'),
     menu = document.querySelector('menu'),
     closeBtn = document.querySelector('.close-btn'),
-    menuItems = menu.querySelectorAll('ul>li');
+    menuItems = menu.querySelectorAll('ul>li'),
+    activeMenu = document.querySelector('.active-menu');
 
      const handlerMenu = function(){
       menu.classList.toggle('active-menu');
     };
 
-    btnMenu.addEventListener('click',handlerMenu);
+    
 
-    closeBtn.addEventListener('click',handlerMenu);
+   
 
     
-   menuItems.forEach((item,i,arr)=>{
-     item.addEventListener('click',handlerMenu);
-   });
+   document.addEventListener('click',(event)=>{
+    let target = event.target;
+    
+  
+    
+    if(target){
+       while(target !== menuItems || target !== btnMenu || target !== closeBtn ){
+         
+        if( menu.classList.contains('active-menu')){
+       if(!target.classList.contains('active-menu') ){
+        handlerMenu();
+        return;
+       }
+        
+      
+      }else if(target.classList.contains('menu')){
+        handlerMenu();
+        return;
+      } else  if(target.tagName === 'HTML'){
+        return;
+      }
+
+     if(target.classList.contains('close-btn')){
+      handlerMenu();
+       return;
+      }
+      if(target.tagName === 'main'){
+      if(target.tagName === 'LI'){
+        handlerMenu();
+        return;
+      }}
+      target = target.parentNode;
+    }
+    }
+     
+   
+  
+   
+    
+  
+   
+  });
 
 
   };
@@ -123,9 +164,23 @@ window.addEventListener('DOMContentLoaded',function(){
 
     const popup = document.querySelector('.popup'),
     popupBtn = document.querySelectorAll('.popup-btn'),
-    popupClose = document.querySelector('.popup-close'),
     popupContent = document.querySelector('.popup-content');
 
+    popup.addEventListener('click',(event)=>{
+      let target = event.target;
+      if(target.classList.contains('popup-close')){
+        popup.style.display = 'none';
+      }else{
+         target = target.closest('.popup-content');
+        if(!target){
+
+          popup.style.display = 'none';
+
+        }
+      }
+
+       
+    });
 
   //Animate Popup
   let i = 0;
@@ -155,10 +210,7 @@ window.addEventListener('DOMContentLoaded',function(){
       });
     });
 
-    popupClose.addEventListener('click', ()=>{
-      popup.style.display = 'none';
-    });
-
+   
 
   };
 
@@ -168,7 +220,6 @@ window.addEventListener('DOMContentLoaded',function(){
 
       
 
-});
 
  const scrollLink = function (val){
 
@@ -240,3 +291,421 @@ window.addEventListener('DOMContentLoaded',function(){
 
  };
  scrollLink();
+
+
+
+ //Табы
+
+ const tabs = () =>{
+    const tabHeader = document.querySelector('.service-header'),
+          tab = tabHeader.querySelectorAll('.service-header-tab'),
+          tabContent = document.querySelectorAll('.service-tab');
+
+
+
+  const  toggleTabContantains = (index)=>{
+    tabContent.forEach((item,i)=>{
+       if(index === i ){
+         tab[i].classList.add('active');
+
+        tabContent[i].classList.remove('d-none');
+      }else{
+        tab[i].classList.remove('active');
+         tabContent[i].classList.add('d-none');
+       }
+    });
+  };
+  tabHeader.addEventListener('click',(event)=>{
+    let target = event.target;
+    target = target.closest('.service-header-tab');
+    
+
+    
+    if(target){
+      tab.forEach((item,i)=>{
+        if(item === target){
+          toggleTabContantains(i);
+
+        }
+      });
+     
+    }
+   
+
+  });
+
+
+
+
+
+ };
+
+ tabs();
+
+
+
+
+// Слайдер
+
+
+const  slider = ()=>{
+
+  const slide = document.querySelectorAll('.portfolio-item'),
+        btn = document.querySelectorAll('.portfolio-btn'),
+       
+        slider = document.querySelector('.portfolio-content'),
+        listDot = document.querySelector('.portfolio-dots');
+
+  let currentSlide = 0 ,
+  interval;
+   let dot ;
+
+
+  const addDot = function(){
+   dot = document.querySelectorAll('.dot');
+   
+    if(dot.length < slide.length){
+      listDot.insertAdjacentHTML('afterbegin','<li class="dot"></li>');
+       addDot();
+    }
+      
+        
+        
+    
+     
+  };
+
+  addDot();
+
+  const prevSlide = (elem,index, strClass)=>{
+     elem[index].classList.remove(strClass);
+  };
+
+  const nextSlide = (elem,index, strClass)=>{
+     elem[index].classList.add(strClass);
+  };
+  
+
+   slider.addEventListener(`click`,(event)=>{
+      event.preventDefault();
+      let target = event.target;
+
+      if(!target.matches('#arrow-right , #arrow-left, .dot')){
+        return;
+      }
+
+    prevSlide(slide,currentSlide,'portfolio-item-active');
+    prevSlide(dot,currentSlide,'dot-active');
+
+      if(target.matches('#arrow-right')){
+        currentSlide++;
+      }else if(target.matches('#arrow-left')){
+        currentSlide--;
+      }else if(target.matches('.dot')){
+        dot.forEach((elem,i,arr)=>{
+          if(target === elem){
+            currentSlide = i;
+          }
+
+        });
+
+
+      }
+      
+      if(currentSlide >= slide.length){
+        currentSlide = 0;
+     
+      }
+      
+
+      if(currentSlide < 0){
+      currentSlide = slide.length - 1;
+     
+      }
+
+    nextSlide(dot,currentSlide,'dot-active');
+    nextSlide(slide,currentSlide,'portfolio-item-active');
+
+
+
+      });
+
+  const autoPlaySlide = () => {
+    prevSlide(slide,currentSlide,'portfolio-item-active');
+    prevSlide(dot,currentSlide,'dot-active');
+    currentSlide++;
+    if(currentSlide >= slide.length){
+      currentSlide = 0;
+    }
+    nextSlide(dot,currentSlide,'dot-active');
+    nextSlide(slide,currentSlide,'portfolio-item-active');
+  };
+
+  
+
+   const startSlide = (time = 3000) => {
+    interval = setInterval(autoPlaySlide,time);
+   };
+
+   const stopSlide = () => {
+    clearInterval(interval);
+
+   };
+
+   slider.addEventListener('mouseover',(event)=>{
+    if(event.target.matches('.portfolio-btn') || event.target.matches('.dot') ){
+      stopSlide();
+      
+    }
+   });
+   slider.addEventListener('mouseout',(event)=>{
+     if(event.target.matches('.portfolio-btn') || event.target.matches('.dot') ){
+      startSlide();
+      
+    }
+     
+   });
+
+  
+
+  startSlide(1500);
+
+
+};
+
+
+slider();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const visitPhoto = function (){
+const wrap =  document.getElementById('command');
+
+wrap.addEventListener('mouseover',(event)=>{
+  let target = event.target;
+  
+  
+
+  if(target.matches('.command__photo')){
+
+    target.dataset.imgOne = target.src;
+    
+    target.src = target.dataset.img;
+    
+  }
+  
+});
+
+wrap.addEventListener('mouseout',(event)=>{
+  let target = event.target;
+  
+  
+
+  if(target.matches('.command__photo')){
+
+   
+    
+    target.src = target.dataset.imgOne;
+    
+  }
+  
+});
+};
+
+visitPhoto();
+
+
+//Калькулятор
+const calc = function(price = 100){
+  
+  const calcSquare = document.querySelector('.calc-square'),
+    calcBlock = document.querySelector('.calc-block'),
+    calcType = calcBlock.querySelector('.calc-type'),
+     calcCount = calcBlock.querySelector('.calc-count'),
+     calcDay = calcBlock.querySelector('.calc-day'),
+     totalValue = document.getElementById('total');
+
+     const countSum = () =>{
+       let total = 0,
+       countValue = 1,
+       dayValue = 1;
+       const typeValue = calcType.options[calcType.selectedIndex].value,
+             squareValue = +calcSquare.value;
+
+        if(calcCount.value > 1){
+          countValue += (calcCount.value - 1) / 10; 
+        }     
+
+        if(calcDay.value && calcDay.value < 5){
+          dayValue *= 2;
+        }else if(calcDay.value && calcDay.value < 10){
+          dayValue *= 1.5;
+        }
+             
+        if(typeValue && squareValue){
+          total = price * typeValue * squareValue * countValue * dayValue;
+        }
+
+            
+             
+
+      totalValue.textContent = total;
+     };
+
+    calcBlock.addEventListener('change',(event)=>{
+      let target = event.target;
+
+     
+
+      if(target.matches('.calc-type, .calc-day , .calc-count , .calc-square') ){
+       countSum();
+      }
+
+
+    });
+
+     calcBlock.addEventListener('input',(event)=>{
+      let target = event.target;
+
+      if(target.matches('.calc-square, .calc-count, .calc-day')){
+        target.value = target.value.replace(/\D/,'');
+
+      }
+       });
+
+  
+};
+calc();
+
+
+
+
+
+const connect = function(){
+
+  const wrapConnect = document.getElementById('connect');
+  let phone = document.getElementById('form2-phone');
+  let name = document.getElementById('form2-name');
+  let email = document.getElementById('form2-email');
+  let message = document.getElementById('form2-message');
+  
+  
+   
+
+  wrapConnect.addEventListener('input',(event)=>{
+      let target = event.target;
+     
+
+      
+      if(target.matches('#form2-name')){
+        let text = target.value;
+        
+        target.value = text.replace(/[^а-я\-\' ']/,'');
+        
+     
+       
+    }
+    if(target.matches('#form2-message')){
+        let text = target.value;
+        
+        target.value = text.replace(/[^а-я\-\' ']/,'');
+        
+     
+       
+    }
+    
+
+      if(target.matches('#form2-email')){
+        
+        let text = target.value;
+         target.value = text.replace(/[^a-z#\@\-_\.!`\*']/i,' ');
+       
+    }
+  
+
+     
+    if(target.matches('#form2-phone')){
+       
+     let text = target.value;
+      
+         target.value = text.replace(/\D|\(|\)|\-/i,'');
+      
+
+       
+    }
+  
+
+    });
+
+
+
+
+     email.addEventListener('blur',(event)=>{
+       
+        email.value = email.value.replace(/[' ']{2,}/gi,' ' );
+        email.value = email.value.replace(/^[-]+|^\s|[-]+$|\s$/gi,'' );
+        
+         email.value = email.value.replace(/[-]+/gi,'-' );
+        
+
+     });
+      message.addEventListener('blur',(event)=>{
+      
+        message.value = message.value.replace(/[' ']{2,}/gi,' ' );
+        message.value = message.value.replace(/^[-]+|^\s|[-]+$|\s$/gi,'' );
+        
+         message.value = message.value.replace(/[-]+/gi,'-' );
+        
+
+     });
+
+       name.addEventListener('blur',(event)=>{
+        name.value = name.value.replace(/[' ']{2,}/gi,' ' );
+         name.value = name.value.replace(/^[-]+|^\s|[-]+$|\s$/gi,'' );
+         name.value = name.value.replace(/[-]+/gi,'-' );
+         let k = name.value.match(/\B[а-я]+\s*/gi);
+
+         let str = '';
+         
+        k.forEach((elem,i)=>{
+          
+          let upper = elem.substr(0,1).toUpperCase();
+          
+          let lower = elem.substr(1);
+         
+
+          
+          str = str + upper + lower + ' ';
+           
+        });
+        name.value = str;
+       });
+
+
+   
+
+
+
+};
+
+connect();
+
+
+
+
+});
