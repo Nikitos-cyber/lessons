@@ -612,22 +612,22 @@ const connect = function(){
      
 
       
-      if(target.matches('#form2-name')){
-        let text = target.value;
+    //   if(target.matches('#form2-name')){
+    //     let text = target.value;
         
-        target.value = text.replace(/[^а-я\-\' ']/,'');
-        
-     
-       
-    }
-    if(target.matches('#form2-message')){
-        let text = target.value;
-        
-        target.value = text.replace(/[^а-я\-\' ']/,'');
+    //     target.value = text.replace(/[^а-я\-\' ']/,'');
         
      
        
-    }
+    // }
+    // if(target.matches('#form2-message')){
+    //     let text = target.value;
+        
+    //     target.value = text.replace(/[^а-я\-\' ']/,'');
+        
+     
+       
+    // }
     
 
       if(target.matches('#form2-email')){
@@ -704,6 +704,10 @@ const connect = function(){
 };
 
 connect();
+
+
+
+
 
 
 
