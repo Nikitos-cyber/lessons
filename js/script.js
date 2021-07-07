@@ -737,6 +737,7 @@ connect();
         if( elem.value.trim() === ''){
           return false;
         }
+        
         if(elem.id === 'form2-message'){
            return /^[а-я\d\' '\,\.\?\!]+$/i.test(elem.value);
         }
@@ -745,8 +746,11 @@ connect();
        }
         
       
-      
-         
+      if(elem.type === 'email'){
+          console.log(elem.type);
+        return /^\w+$/.test(elem.value);
+       }
+        
       
 
        if(elem.type === 'tel'  ){
