@@ -630,24 +630,24 @@ const connect = function(){
     // }
     
 
-      if(target.matches('#form2-email')){
+    //   if(target.matches('#form2-email')){
         
-        let text = target.value;
-         target.value = text.replace(/[^a-z#\@\-_\.!`\*']/i,' ');
+    //     let text = target.value;
+    //      target.value = text.replace(/[^a-z#\@\-_\.!`\*']/i,' ');
        
-    }
+    // }
   
 
      
-    if(target.matches('#form2-phone')){
+    // if(target.matches('#form2-phone')){
        
-     let text = target.value;
+    //  let text = target.value;
       
-         target.value = text.replace(/\D|\(|\)|\-/i,'');
+    //      target.value = text.replace(/\D|\(|\)|\-/i,'');
       
 
        
-    }
+    // }
   
 
     });
@@ -682,18 +682,18 @@ const connect = function(){
 
          let str = '';
          
-        k.forEach((elem,i)=>{
+        // k.forEach((elem,i)=>{
           
-          let upper = elem.substr(0,1).toUpperCase();
+        //   let upper = elem.substr(0,1).toUpperCase();
           
-          let lower = elem.substr(1);
+        //   let lower = elem.substr(1);
          
 
           
-          str = str + upper + lower + ' ';
+        //   str = str + upper + lower + ' ';
            
-        });
-        name.value = str;
+        // });
+        // name.value = str;
        });
 
 
@@ -708,7 +708,171 @@ connect();
 
 
 
+// send-ajax-form
 
+   const sendForm = ()=>{
+
+    const errorMessage = 'Что то  пошло не так...' ,
+          loadMessage = 'Загрузка...',
+          successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+    const  form = document.getElementById('form1');
+     const  form2 = document.getElementById('form2');
+    
+    let error = new Set();
+
+    
+
+    const  formCreate = (form)=>{
+   
+    const statusMessage = document.createElement('div');
+    statusMessage.style.cssText = 'font-size:2rem;';
+
+     let elementsForm = [...form.elements].filter(item =>{
+       return item.tagName.toLowerCase() === 'input' ;
+     });
+     
+
+      const isValid = (elem)=>{
+
+        if( elem.value.trim() === ''){
+          return false;
+        }
+        if(elem.id === 'form2-message'){
+           return /^[а-я\d\' '\,\.\?\!]+$/i.test(elem.value);
+        }
+        if(elem.id === 'form1-name' || elem.id === 'form2-name') {
+        return /^[^\w]+$/i.test(elem.value);
+       }
+        
+      
+      
+         
+      
+
+       if(elem.type === 'tel'  ){
+        return /^\+?\d+$/.test(elem.value);
+       }
+
+       return false;
+
+     }
+
+     const  checkIt = (event)=>{
+      let target = event.target;
+      if(isValid(target)){
+        target.style.border = 'solid green';
+        error.delete(target);
+        
+      }else{
+         target.style.border = 'solid red';
+        error.add(target);
+      }
+     };
+
+     elementsForm.forEach(item =>{
+       item.addEventListener('change',checkIt);
+     });
+    
+      
+
+     
+
+      
+    
+    form.addEventListener('submit',(event)=>{
+      event.preventDefault();
+      form.append(statusMessage);
+      
+     
+       const formData = new FormData(form);
+
+      let body = { };
+
+      for( let val of formData.entries()){
+        body[val[0]] = val[1];
+      }
+
+      
+       if(error.size === 0){
+         statusMessage.textContent = loadMessage;
+         
+       
+      postData(body,()=>{
+        
+         statusMessage.textContent = successMessage;
+      },(error)=>{
+        statusMessage.textContent = errorMessage;
+        console.log(error);
+      });
+      }else{
+        
+      }
+    
+
+     
+
+  
+     const clearInput = (form)=>{
+ 
+    const input = form.querySelectorAll('input');
+
+    
+    
+    input.forEach((elem)=>{
+      if(elem.value){
+         console.log(elem.value);
+        elem.value = '';
+        elem.style.border = 'none';
+       
+      }
+    });
+
+      };
+
+      clearInput(form);
+
+      
+    });
+  };
+ 
+
+  formCreate(form);
+  formCreate(form2);
+    const postData = (body,outputData,errorData)=>{
+
+       const request = new XMLHttpRequest();
+
+      request.addEventListener('readystatechange',()=>{
+              if(request.readyState !== 4 ){
+                return ;
+              }
+              if(request.status === 200){
+                outputData();
+                
+               
+              }else{
+                errorData(request.status);
+                
+              }
+            
+      });
+      request.open('POST','./server.php');
+      request.setRequestHeader('Content-Type','aplication/json');
+
+     
+
+      request.send(JSON.stringify(body));
+
+    };
+
+
+   };
+   sendForm();
+    
+    
+    
+      
+       
 
 
 
