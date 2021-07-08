@@ -710,6 +710,8 @@ connect();
 
 // send-ajax-form
 
+  
+
    const sendForm = ()=>{
 
     const errorMessage = 'Что то  пошло не так...' ,
@@ -796,21 +798,25 @@ connect();
         body[val[0]] = val[1];
       }
 
+     
+
       
        if(error.size === 0){
          statusMessage.textContent = loadMessage;
          
        
-      postData(body,()=>{
-        
-         statusMessage.textContent = successMessage;
-      },(error)=>{
-        statusMessage.textContent = errorMessage;
-        console.log(error);
-      });
-      }else{
-        
+      postData(body)
+    .then((response)=>{
+      if(response.status !== 200){
+        throw new Error('status network not 200');
       }
+       statusMessage.textContent = successMessage;
+    })
+    .catch((error)=>{
+        statusMessage.textContent = errorMessage;
+        console.error(error);
+      });
+    }
     
 
      
@@ -842,30 +848,17 @@ connect();
 
   formCreate(form);
   formCreate(form2);
-    const postData = (body,outputData,errorData)=>{
+    const postData = (body)=>{
 
-       const request = new XMLHttpRequest();
-
-      request.addEventListener('readystatechange',()=>{
-              if(request.readyState !== 4 ){
-                return ;
-              }
-              if(request.status === 200){
-                outputData();
-                
-               
-              }else{
-                errorData(request.status);
-                
-              }
-            
+      return fetch('./server.php',{
+        method:'POST',
+        headers:{
+          'Content-Type': 'aplication/json'
+        },
+        body:JSON.stringify(body)
       });
-      request.open('POST','./server.php');
-      request.setRequestHeader('Content-Type','aplication/json');
 
-     
-
-      request.send(JSON.stringify(body));
+      
 
     };
 
