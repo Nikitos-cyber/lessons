@@ -710,6 +710,8 @@ connect();
 
 // send-ajax-form
 
+  
+
    const sendForm = ()=>{
 
     const errorMessage = 'Что то  пошло не так...' ,
@@ -796,21 +798,22 @@ connect();
         body[val[0]] = val[1];
       }
 
+      const outputData = ()=>{
+         statusMessage.textContent = successMessage;
+    };
+
       
        if(error.size === 0){
          statusMessage.textContent = loadMessage;
          
        
-      postData(body,()=>{
-        
-         statusMessage.textContent = successMessage;
-      },(error)=>{
+      postData(body)
+    .then(outputData)
+    .catch((error)=>{
         statusMessage.textContent = errorMessage;
-        console.log(error);
+        console.error(error);
       });
-      }else{
-        
-      }
+    }
     
 
      
@@ -842,20 +845,21 @@ connect();
 
   formCreate(form);
   formCreate(form2);
-    const postData = (body,outputData,errorData)=>{
+    const postData = (body)=>{
 
-       const request = new XMLHttpRequest();
+      return new Promise ((resolve,reject) =>{
+         const request = new XMLHttpRequest();
 
       request.addEventListener('readystatechange',()=>{
               if(request.readyState !== 4 ){
                 return ;
               }
               if(request.status === 200){
-                outputData();
+                resolve();
                 
                
               }else{
-                errorData(request.status);
+                reject(request.status);
                 
               }
             
@@ -866,6 +870,7 @@ connect();
      
 
       request.send(JSON.stringify(body));
+      });
 
     };
 
