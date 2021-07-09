@@ -5,6 +5,9 @@
           successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
     const  form = document.getElementById('form1');
      const  form2 = document.getElementById('form2');
+      const  form3 = document.getElementById('form3');
+
+     
     
     let error = new Set();
 
@@ -29,7 +32,8 @@
         if(elem.id === 'form2-message'){
            return /^[а-я\d\' '\,\.\?\!]+$/i.test(elem.value);
         }
-        if(elem.id === 'form1-name' || elem.id === 'form2-name') {
+        if(elem.id === 'form1-name' || elem.id === 'form2-name'
+        || elem.id === 'form3-name') {
         return /^[^\w]+$/i.test(elem.value);
        }
         
@@ -145,6 +149,8 @@
 
   formCreate(form);
   formCreate(form2);
+  formCreate(form3);
+
     const postData = (body)=>{
 
       return fetch('./server.php',{
