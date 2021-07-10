@@ -14,7 +14,7 @@
   // Timer 
  
 
-  countTimer('01 july 2022');
+  countTimer('14 july 2021');
 
   // Меню
  

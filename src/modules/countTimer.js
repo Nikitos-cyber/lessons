@@ -14,6 +14,8 @@ function countTimer(deadline){
       minuts = Math.floor((timeRemaining / 60) % 60),
       hours = Math.floor((timeRemaining / 60 / 60)  );
 
+     
+
        function check (...arr){
       
        arr.forEach((item,i,arr)=>{

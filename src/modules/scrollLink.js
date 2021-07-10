@@ -18,7 +18,7 @@
   
   const animateScroll = function(val){
     
-    i += 7;
+    i += 20;
     idAnimateScroll = setTimeout(animateScroll,1,val);
     if(i < val){
       doc.scrollTop = i;
@@ -30,37 +30,50 @@
   };
   
 
-  linkScroll.addEventListener('click',()=>{
+  linkScroll.addEventListener('click',(event)=>{
+    event.preventDefault();
     idAnimateScroll = setTimeout(animateScroll,1,850);
     scroll = doc.scrollTop;
     i = scroll;
     
+    
   });
 
-  menuItems[0].addEventListener('click',()=>{
+  menuItems[0].addEventListener('click',(event)=>{
+    event.preventDefault();
     idAnimateScroll = setTimeout(animateScroll,1,serviceBlock.getBoundingClientRect().top);
     scroll = doc.scrollTop;
     i = scroll;
+    
   });
-   menuItems[1].addEventListener('click',()=>{
+   menuItems[1].addEventListener('click',(event)=>{
+      event.preventDefault();
     idAnimateScroll = setTimeout(animateScroll,1,portfolio.getBoundingClientRect().top);
     scroll = doc.scrollTop;
     i = scroll;
+   
   });
-   menuItems[2].addEventListener('click',()=>{
+   menuItems[2].addEventListener('click',(event)=>{
+     event.preventDefault();
     idAnimateScroll = setTimeout(animateScroll,1,calc.getBoundingClientRect().top);
     scroll = doc.scrollTop;
     i = scroll;
+    
   });
-   menuItems[3].addEventListener('click',()=>{
+   menuItems[3].addEventListener('click',(event)=>{
+      event.preventDefault();
     idAnimateScroll = setTimeout(animateScroll,1,command.getBoundingClientRect().top);
     scroll = doc.scrollTop;
     i = scroll;
+   
   });
-  menuItems[4].addEventListener('click',()=>{
+  menuItems[4].addEventListener('click',(event)=>{
+    event.preventDefault();
     idAnimateScroll = setTimeout(animateScroll,1,connect.getBoundingClientRect().top);
     scroll = doc.scrollTop;
     i = scroll;
+    
+    
   });
 
 

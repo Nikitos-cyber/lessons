@@ -17,6 +17,7 @@
    
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size:2rem;';
+   
 
      let elementsForm = [...form.elements].filter(item =>{
        return item.tagName.toLowerCase() === 'input' ;
@@ -83,6 +84,10 @@
     form.addEventListener('submit',(event)=>{
       event.preventDefault();
       form.append(statusMessage);
+
+      if(form.id){
+         statusMessage.style.cssText = 'color:white;';
+      }
 
       
       

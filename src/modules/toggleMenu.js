@@ -16,8 +16,12 @@ const toggleMenu = ()=>{
 
     
    document.addEventListener('click',(event)=>{
+     
+     
     let target = event.target;
-    
+    if(target.closest('.close-btn')){
+      event.preventDefault();
+    }
   
     
     if(target){
@@ -38,6 +42,7 @@ const toggleMenu = ()=>{
       }
 
      if(target.classList.contains('close-btn')){
+      
       handlerMenu();
        return;
       }
