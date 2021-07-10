@@ -3,8 +3,8 @@ const  slider = ()=>{
   const slide = document.querySelectorAll('.portfolio-item'),
         btn = document.querySelectorAll('.portfolio-btn'),
        
-        slider = document.querySelector('.portfolio-content'),
-        listDot = document.querySelector('.portfolio-dots');
+        slider = document.querySelector('.portfolio-content');
+      let  listDot = document.querySelector('.portfolio-dots');
 
   let currentSlide = 0 ,
   interval;
@@ -20,12 +20,17 @@ const  slider = ()=>{
     }
       
         
-        
+        listDot = document.querySelector('.portfolio-dots');
+
+       
     
      
   };
 
+  
+
   addDot();
+  listDot.children[0].classList.add('dot-active');
 
   const prevSlide = (elem,index, strClass)=>{
      elem[index].classList.remove(strClass);
