@@ -49,7 +49,8 @@
       
 
        if(elem.type === 'tel'  ){
-        return /^\+?\d{1,11}$/.test(elem.value);
+        return /^\+?[87]([-()]*\d){10}$/.test(elem.value);
+        
        }
 
        return false;
